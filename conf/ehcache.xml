@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="false" monitoring="autodetect"
+         dynamicConfig="false">
+
+    <!-- 1800 second = 30 minutes-->
+    <cache name="messages"
+            maxElementsInMemory="1000000"
+            eternal="false"
+            timeToIdleSeconds="30"
+            timeToLiveSeconds="18000"
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+        <persistence strategy="none"/>
+    </cache>
+
+
+</ehcache>
