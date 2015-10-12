@@ -13,7 +13,7 @@ class MediatorTest extends FlatSpec with Matchers with MockFactory {
 
   "A Mediator" should "collect one item with on key and remove it on process" in {
     val mediator = new Mediator[Integer](lifecycle)
-    mediator.put("1",1)
+    mediator.put("1",1, 1)
     var queue = mediator.remove("1")
     queue should have size 1
     queue should be equals(Set(1))
@@ -25,8 +25,8 @@ class MediatorTest extends FlatSpec with Matchers with MockFactory {
   it should "collect several items with one key" in {
     val mediator = new Mediator[Integer](lifecycle)
 
-    mediator.put("1",1)
-    mediator.put("1",2)
+    mediator.put("1",1, 1)
+    mediator.put("1",2, 1)
 
     var queue = mediator.remove("1")
     queue should have size 2
@@ -39,9 +39,9 @@ class MediatorTest extends FlatSpec with Matchers with MockFactory {
   it should "collect items with several keys" in {
     val mediator = new Mediator[Int](lifecycle)
 
-    mediator.put("1",1)
-    mediator.put("2",1)
-    mediator.put("3",2)
+    mediator.put("1",1, 1)
+    mediator.put("2",1, 1)
+    mediator.put("3",2, 1)
 
 
     mediator.remove("1") should be equals (Set(1))

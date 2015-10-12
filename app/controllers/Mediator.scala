@@ -40,13 +40,28 @@ class Mediator[T] @Inject() (lifecycle : ApplicationLifecycle) {
 
   }
 
-
-
-  def put(key : String, p : T): Unit = {
+  def put(key : String, p : T, timeToIdleSeconds : Int): Unit = {
     lockedWrite(cache, key) {
       val currentQueue :Set[T] = cache.get(key);
       val newQueue = currentQueue + p;
-      cache.put(new Element(key, newQueue))
+      val elem = new Element(key, newQueue)
+      elem.setTimeToIdle(timeToIdleSeconds)
+      cache.put(elem)
+    }
+  }
+
+  def invalidate(key : String, p : T): Unit = {
+    lockedWrite(cache, key) {
+      val currentElem = cache.get(key)
+      // null it's possible if ehcache already have removed key
+      if (null != currentElem) {
+        val currentQueue: Set[T] = currentElem;
+        //implicit conversion!
+        val newQueue = currentQueue - p;
+        val newElem = new Element(key, newQueue)
+        newElem.setTimeToIdle(currentElem.getTimeToLive)
+        cache.put(newElem)
+      }
     }
   }
 
@@ -57,4 +72,5 @@ class Mediator[T] @Inject() (lifecycle : ApplicationLifecycle) {
       return subscribers
     }
   }
+
 }
