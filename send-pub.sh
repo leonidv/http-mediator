@@ -1,1 +1,1 @@
-curl --max-time 40 --data "value=test" -v http://localhost:9000/asdf
+curl --max-time 40 --data "value=test" -v http://localhost:9000/iteratee/asdf
